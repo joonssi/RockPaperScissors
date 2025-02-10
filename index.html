@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background-color: black;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    function getComputerChoice() {
+      const choices = ['rock', 'paper', 'scissors'];  
+      const randomIndex = Math.floor(Math.random() * 3);
+
+      return choices[randomIndex];
+    }
+
+    function getHumanChoice() {
+      const choice = prompt('Rock, Paper, or Scissors?').toLowerCase();
+
+      if (choice == 'rock' || choice == 'paper' || choice == 'scissors') {
+        return choice;
+      } else {
+        return null;
+      }
+    }
+
+    let round = 0
+    let humanScore = 0;
+    let computerScore = 0;
+
+    function playRound(humanChoice, computerChoice) {
+      if (!humanChoice) {
+        console.log('wrong input');
+        return;
+      }
+
+      if (humanChoice == computerChoice) {
+        console.log('Tie!');
+      } else if (humanChoice == 'rock' && computerChoice == 'scissors' 
+              || humanChoice == 'paper' && computerChoice == 'rock' 
+              || humanChoice == 'scissors' && computerChoice == 'paper') {
+        console.log(`You won! ${humanChoice} beats ${computerChoice}`);
+        humanScore++;
+      } else {
+        console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+        computerScore++;
+      }
+
+      console.log(`Round ${++round} || humanScore: ${humanScore}, computerScore: ${computerScore}`);
+    }
+
+  while (humanScore < 3 && computerScore < 3) {
+    playRound(getHumanChoice(), getComputerChoice());
+  }
+
+  if (humanScore == 3) {
+    console.log('You won');
+  } else {
+    console.log('You lose');
+  }
+
+  </script>
+</body>
+</html>>
