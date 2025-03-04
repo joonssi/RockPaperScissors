@@ -78,12 +78,12 @@
     }
     .choices button:active {
       box-shadow: 0 2px #2980b9;
-      transform: translateY(4px);
+      transform: translateY(2px);
     }
     
     .active {
       box-shadow: 0 2px #2980b9;
-      transform: translateY(4px);
+      transform: translateY(2px);
     }
     
     h1 {
@@ -129,6 +129,7 @@
 
     document.addEventListener('keydown', (event) => {
       const key = event.key.toLowerCase();
+        console.log(`Key pressed: ${key}`);
       if (key == 'r') {
         buttons[0].click();
       } else if (key == 'p') {
@@ -143,9 +144,10 @@
     buttons.forEach(button => {
       button.addEventListener('click', () => {
         button.classList.add('active');
+        console.log(button.classList);
         setTimeout(() => {
           button.classList.remove('active');
-        }, 20);
+        }, 100);
 
 
         if (round <= 5) {
