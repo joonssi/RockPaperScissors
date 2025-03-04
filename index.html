@@ -78,7 +78,12 @@
     }
     .choices button:active {
       box-shadow: 0 2px #2980b9;
-      transform: translateY(2px);
+      transform: translateY(4px);
+    }
+    
+    .active {
+      box-shadow: 0 2px #2980b9;
+      transform: translateY(4px);
     }
     
     h1 {
@@ -98,6 +103,8 @@
       <button id="paper">Paper</button>
       <button id="scissors">Scissors</button>
     </div>
+
+    <span style="margin-top : 20px; color:#F1FA8C">u can also press r, p, or s to play</span>
   </div>
   <script>
     let round = 0
@@ -106,7 +113,6 @@
 
     const buttons = document.querySelectorAll('button');
     const display = document.getElementById('display');
-
 
     const observer = new MutationObserver(function (mutations) {
       mutations.forEach(function (mutation) {
@@ -121,10 +127,27 @@
       subtree: true
     });
 
+    document.addEventListener('keydown', (event) => {
+      const key = event.key.toLowerCase();
+      if (key == 'r') {
+        buttons[0].click();
+      } else if (key == 'p') {
+        buttons[1].click();
+      } else if (key == 's') {
+        buttons[2].click();
+      }
+        
+    });
 
 
     buttons.forEach(button => {
       button.addEventListener('click', () => {
+        button.classList.add('active');
+        setTimeout(() => {
+          button.classList.remove('active');
+        }, 20);
+
+
         if (round <= 5) {
           const humanChoice = button.id;
           const computerChoice = getComputerChoice();
@@ -135,11 +158,11 @@
 
         if (round == 5) {
           if (humanScore > computerScore) {
-            display.innerHTML += `<div class="win">You won the game!</div>`;
+            display.innerHTML += `<div class="win" style="color:#50FA7B">You won the game!</div>`;
           } else if (humanScore < computerScore) {
-            display.innerHTML += `<div class="win">You lost the game!</div>`;
+            display.innerHTML += `<div class="win" style="color:#FF5555">You lost the game!</div>`;
           } else {
-            display.innerHTML += `<div class="win">You tied the game!</div>`;
+            display.innerHTML += `<div class="win" style="color:#F1FA8C">You tied the game!</div>`;
           }
 
           round = 0;
