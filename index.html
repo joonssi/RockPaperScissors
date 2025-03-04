@@ -1,21 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
     body {
-      color: rgb(194, 183, 183);
+      color: #808080;
       background-color: black;
     }
+
+    .round {
+      width: 300px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .score {}
+
+    .win {
+      color: #50FA7B;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      height: 100vh;
+    }
+
+    .container {
+      border: 1px solid #8BE9FD;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      width: 400px;
+      height: 500px;
+    }
+
+    #display {
+      height: 300px;
+      width: 350px;
+      overflow-y: scroll;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;;
+    }
+
+    .computer {
+      color: #808080;
+    }
+
+    .me {
+      color: #FFFFFF;
+
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    .choices {
+      display: flex;    
+      margin-top: 20px;
+    }
+    .choices button {
+      transition: all 0.1s ease;
+      box-shadow: 0 4px #2980b9;
+      cursor: pointer;
+    }
+    .choices button:active {
+      box-shadow: 0 2px #2980b9;
+      transform: translateY(2px);
+    }
+    
+    h1 {
+      color: #8BE9FD;
+    }
+
   </style>
 </head>
+
 <body>
+  <div class="container">
+    <h1>Rock Paper Scissors</h1>
+    <div id="display"></div>
+
+    <div class="choices">
+      <button id="rock">Rock</button>
+      <button id="paper">Paper</button>
+      <button id="scissors">Scissors</button>
+    </div>
+  </div>
   <script>
+    let round = 0
+    let humanScore = 0;
+    let computerScore = 0;
+
+    const buttons = document.querySelectorAll('button');
+    const display = document.getElementById('display');
+
+
+    const observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        display.scrollTop = display.scrollHeight;
+      });
+    });
+
+    observer.observe(display, {
+      attributes: true,
+      childList: true,
+      characterData: true,
+      subtree: true
+    });
+
+
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        if (round <= 5) {
+          const humanChoice = button.id;
+          const computerChoice = getComputerChoice();
+          playRound(humanChoice, computerChoice);
+
+          display.innerHTML += `<div class="round"><span class="choice"><span class="me">${humanChoice}</span> vs <span class="computer">${computerChoice}</span></span> <span lass="score"><span class="me">${humanScore}</span> - <span class="computer">${computerScore}</span></span></div>`;
+        }
+
+        if (round == 5) {
+          if (humanScore > computerScore) {
+            display.innerHTML += `<div class="win">You won the game!</div>`;
+          } else if (humanScore < computerScore) {
+            display.innerHTML += `<div class="win">You lost the game!</div>`;
+          } else {
+            display.innerHTML += `<div class="win">You tied the game!</div>`;
+          }
+
+          round = 0;
+          humanScore = 0;
+          computerScore = 0;
+        }
+
+      });
+    });
+
+
     function getComputerChoice() {
       const randomIndex = Math.floor(Math.random() * 3);
-
+      const choices = ['rock', 'paper', 'scissors'];
       return choices[randomIndex];
     }
 
@@ -29,41 +167,25 @@
       }
     }
 
-    let round = 0
-    let humanScore = 0;
-    let computerScore = 0;
+
 
     function playRound(humanChoice, computerChoice) {
-      if (!humanChoice) {
-        console.log('wrong input');
-        return;
-      }
+      round++;
 
       if (humanChoice == computerChoice) {
-        console.log('Tie!');
-      } else if (humanChoice == 'rock' && computerChoice == 'scissors' 
-              || humanChoice == 'paper' && computerChoice == 'rock' 
-              || humanChoice == 'scissors' && computerChoice == 'paper') {
-        console.log(`You won! ${humanChoice} beats ${computerChoice}`);
+
+      } else if (humanChoice == 'rock' && computerChoice == 'scissors'
+        || humanChoice == 'paper' && computerChoice == 'rock'
+        || humanChoice == 'scissors' && computerChoice == 'paper') {
         humanScore++;
       } else {
-        console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
         computerScore++;
       }
 
-      console.log(`Round ${++round} || humanScore: ${humanScore}, computerScore: ${computerScore}`);
     }
 
-  while (humanScore < 3 && computerScore < 3) {
-    playRound(getHumanChoice(), getComputerChoice());
-  }
-
-  if (humanScore == 3) {
-    console.log('You won');
-  } else {
-    console.log('You lose');
-  }
 
   </script>
 </body>
-</html>>
+
+</html>
